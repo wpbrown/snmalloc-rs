@@ -36,6 +36,8 @@ extern "C" {
         new_size: usize,
     ) -> *mut c_void;
 
+    pub fn rust_get_malloc_info_x1(ptr: *mut malloc_info_x1) -> c_void;
+
     /// Allocate `count` items of `size` length each.
     /// Returns `null` if `count * size` overflows or on out-of-memory.
     /// All items are initialized to zero.
@@ -62,6 +64,14 @@ extern "C" {
 
     /// Return the available bytes in a memory block.
     pub fn sn_malloc_usable_size(p: *const c_void) -> usize;
+}
+
+#[repr(C)]
+#[derive(Default, Debug)]
+pub struct malloc_info_x1 {
+    pub system_allocated_bytes: usize,
+    pub application_requested_bytes: usize,
+    pub application_allocated_bytes: usize,
 }
 
 #[cfg(test)]

@@ -28,8 +28,10 @@
 extern crate snmalloc_sys as ffi;
 
 use core::alloc::{GlobalAlloc, Layout};
+use core::ptr::addr_of_mut;
 
 pub struct SnMalloc;
+pub use ffi::malloc_info_x1 as MallocInfoX1;
 
 unsafe impl GlobalAlloc for SnMalloc {
     /// Allocate the memory with the given alignment and size.
@@ -66,6 +68,16 @@ unsafe impl GlobalAlloc for SnMalloc {
     #[inline(always)]
     unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
         ffi::rust_realloc(ptr as _, layout.align(), layout.size(), new_size) as _
+    }
+}
+
+impl SnMalloc {
+    pub fn get_malloc_info_v1() -> MallocInfoX1 {
+        let mut info = MallocInfoX1::default();
+        unsafe {
+            ffi::rust_get_malloc_info_x1(addr_of_mut!(info));
+        }
+        info
     }
 }
 
