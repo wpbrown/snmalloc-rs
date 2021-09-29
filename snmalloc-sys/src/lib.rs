@@ -72,6 +72,9 @@ pub struct malloc_info_x1 {
     pub system_allocated_bytes: usize,
     pub application_requested_bytes: usize,
     pub application_allocated_bytes: usize,
+    pub allocations_small: usize,
+    pub allocations_medium: usize,
+    pub allocations_large: usize,
 }
 
 #[cfg(test)]
