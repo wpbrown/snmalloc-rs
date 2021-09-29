@@ -36,7 +36,10 @@ extern "C" {
         new_size: usize,
     ) -> *mut c_void;
 
-    pub fn rust_get_malloc_info_x1(ptr: *mut malloc_info_x1) -> c_void;
+    /// Gather fast detailed statistics for allocator usage process-wide or for
+    /// the current thread respectively
+    pub fn rust_get_process_malloc_info_x1(ptr: *mut malloc_info_x1) -> c_void;
+    pub fn rust_get_thread_malloc_info_x1(ptr: *mut malloc_info_x1) -> c_void;
 
     /// Allocate `count` items of `size` length each.
     /// Returns `null` if `count * size` overflows or on out-of-memory.

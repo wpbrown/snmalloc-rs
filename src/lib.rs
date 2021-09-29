@@ -31,7 +31,7 @@ use core::alloc::{GlobalAlloc, Layout};
 use core::ptr::addr_of_mut;
 
 pub struct SnMalloc;
-pub use ffi::malloc_info_x1 as SnMallocInfoX1;
+pub use ffi::malloc_info_x1 as SnMallocInfo;
 
 unsafe impl GlobalAlloc for SnMalloc {
     /// Allocate the memory with the given alignment and size.
@@ -72,10 +72,18 @@ unsafe impl GlobalAlloc for SnMalloc {
 }
 
 impl SnMalloc {
-    pub fn get_malloc_info_v1() -> SnMallocInfoX1 {
-        let mut info = SnMallocInfoX1::default();
+    pub fn get_process_malloc_info() -> SnMallocInfo {
+        let mut info = SnMallocInfo::default();
         unsafe {
-            ffi::rust_get_malloc_info_x1(addr_of_mut!(info));
+            ffi::rust_get_process_malloc_info_x1(addr_of_mut!(info));
+        }
+        info
+    }
+    
+    pub fn get_thread_malloc_info() -> SnMallocInfo {
+        let mut info = SnMallocInfo::default();
+        unsafe {
+            ffi::rust_get_thread_malloc_info_x1(addr_of_mut!(info));
         }
         info
     }
