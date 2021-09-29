@@ -67,7 +67,7 @@ extern "C" {
 }
 
 #[repr(C)]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct malloc_info_x1 {
     pub system_allocated_bytes: usize,
     pub application_requested_bytes: usize,
